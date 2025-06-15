@@ -1,72 +1,93 @@
-# 🚢 Battleship Game (Amiral Battı) 🎯
+#  Battleship Game in C 
 
-**Battleship** (also known as "Amiral Battı") is a classic two-player strategy game where each player tries to locate and sink the opponent’s fleet.  
-This version is implemented in the **C programming language** and is designed to run in the terminal.
+This is a **two-player console-based Battleship game** written in C. The game allows players to choose a board size, automatically places ships randomly, and takes turns to attack the opponent’s board. The player who sinks all opponent ships first wins the game.
 
 ---
 
-## 🕹️ Getting Started
+##  Game Features
 
-### ⚙️ Prerequisites
-Make sure you have a C compiler (e.g., `gcc`) installed on your system.
+- Supports 3 board sizes:  
+  `10x10`, `16x16`, `20x20`
+- Randomized ship placement
+- 2-player turn-based gameplay
+- Hit/miss feedback and score tracking
+- Displays number of moves per player
+- Dynamic memory allocation for flexible board sizing
+- Auto-clear screen for better UI experience (cross-platform)
 
-### 🧱 Compilation
-To compile the program, run the following command in your terminal:
+---
+
+##  How to Play
+
+1. When the game starts, you’ll be prompted to choose a board size:
+
+  Select board size (1: 10x10, 2: 16x16, 3: 20x20):
+
+2. Each player’s board will be randomly populated with 3 ships of sizes `2`, `3`, and `5`.
+
+3. Players take turns to enter coordinates to attack:
+Player 1, enter coordinates (e.g., 3 B):
+
+4. If a ship part is hit, the player gets another turn. Otherwise, control switches.
+
+5. The game ends when all ships of one player are sunk (10 hits total).
+
+---
+
+## ⚙ Compilation
+
+Use any standard C compiler like `gcc`.
 
 ```bash
-gcc -o battleship amiral_batti.c
-📏 Game Rules
-🎲 Board Size Selection
-At the start of the game, you will be asked to choose a board size:
+gcc battleship.c -o battleship
+Then run it:
+./battleship
+```
 
-10x10
+## Core Mechanics
+Board Representation:
+Dynamic 2D char arrays. 'O' = ship, '-' = empty, 'X' = hit
 
-16x16
+Ship Placement:
+Random orientation (horizontal or vertical), placed only if cells are unoccupied
 
-20x20
+Hit Logic:
+User inputs a row number and column letter (e.g., 3 B)
+Game converts input and checks if it hits a ship on the opponent's board
+Score is updated accordingly
 
-🚢 Ship Placement
-Ships are randomly placed on each player’s board. Ship lengths:
+## Example Output
+```bash
+******Amiral Batti Oyunu******
+Select board size (1: 10x10, 2: 16x16, 3: 20x20): 1
 
-Small ship: 2 units
+Player 1 Board:
+2. Player Total Moves: 5
 
-Medium ship: 3 units
+  A B C D E F G H I J
+ 1 - - - - - - - - - -
+ 2 - - - - - - - - - -
+...
 
-Large ship: 5 units
+Player 1, enter coordinates (e.g., 3 B): 3 B
+Hit!
+Player 1 Score: 1
+You get another turn!
+```
+## Concepts Used
+Structs (Player, Ship)
 
-🎯 Attacking
-On your turn, enter a coordinate (e.g., 3 B) to fire at your opponent’s board.
-You’ll be notified whether the attack is a hit or miss.
+Dynamic memory (malloc, free)
 
-🧾 Statistics & Feedback
-The game tracks both players’ hit rates.
+Recursion-free procedural logic
 
-You can monitor hits and misses on the display.
+Multi-dimensional arrays
 
-🏁 Game End
-The game ends when all ships of one player are destroyed. The other player is declared the winner.
+Input validation and error handling
 
-📜 Main Functions in the Code
-tahtayaAta(Player *player, int boardSize)
-Initializes the game board.
+Platform-aware screen clearing (cls for Windows, clear for UNIX)
 
-tahtayiYaz(Player *player, int boardSize)
-Displays the current state of the board.
+## Memory Management
+All dynamically allocated memory (board arrays and ship hit arrays) is properly released at the end of the game using:
 
-kontrolEt(Player *player, int x, int y, int direction, int size, int boardSize)
-Checks if a ship can be placed at the given position.
-
-gemiYerlestir(Player *player, int boardSize)
-Randomly places ships on the board.
-
-vurus(Player *player, int x, int y, int currentPlayer, int boardSize)
-Executes an attack and checks hit or miss.
-
-oyunBitisi()
-Verifies whether the game is over.
-
-oyunDurumuGoster(Player *player1, Player *player2, int boardSize)
-Shows live game statistics.
-
-serbestBirak(Player *player, int boardSize)
-Frees allocated memory at the end of the game.
+**void serbestBirak(Player *player, int boardSize);***
